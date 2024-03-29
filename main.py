@@ -1,48 +1,55 @@
 import shodan
-import pandas as pd
+import csv
 from secret import API_KEY
+from datetime import datetime
+import json
 
-"""
-1) Search forweb servers within the USA that have port 3389 open. Limit your results to
-the first IW responses.
-b. Output a CSV with the IP addresses listed, and the Operating system detected on each
-of the IP addresses.
-
-2) a. use an appropriate endpoint to look up the DNS information for "paychex.com".
-b. Iterate through the results and print the "subdomain", "type" and "value" where the
-type is not "MY.
-c. Provide your output in 'SON to the user.
-
-"""
 Custom_Key = '' # place key here
-
-
- # place api here
-
-# print(len(api.search(query='port:3389 country:US')['matches']))
-
-
 
 def server_search(country,port):
     api = shodan.Shodan(API_KEY)
+
     # obtain results from shodan
     results = api.search(query=f"port:{port} country:{country}")['matches']
 
-    output = [['ip_address','os']]
 
+    # loop through results adding fields and results data to output
+    output = [['ip_address','os']]
     for r in results:
-        output.append(r['ip_str'],r['os'])
-    return results
+        os = r['os'] if r['os'] is not None else "unknown" # checks if OS is known
+        output.append([r['ip_str'],os])
+
+    # creates csv of results
+    dt = datetime.now()
+    trailer = dt.strftime("%m%d%Y_%H:%M:%S")
+    with open(f"server_search-{trailer}.csv",'w') as f:
+        csv_write = csv.writer(f)
+        csv_write.writerows(output)
+
 
 def intel_lookup(domain):
-    pass
+    api = shodan.Shodan(API_KEY)
+    output = {"subdomains":[]}
+    results = api.dns.domain_info(f"{domain}", history=False, type=None)['data']
+
+    # This loop would be used to build the JSON output
+    for r in results:
+        sub = 'none' if r['subdomain'] == '' else r['subdomain']
+        type = r['type']
+        if type != 'MX': # checks it's not an MX record
+            output['subdomains'].append({
+                'subdomain':sub,
+                'type':r['type'],
+                'value':r['value']
+            })
+    # will write to a json file
+    with open('domains.json', 'w', encoding='utf-8') as f:
+        json.dump(output, f, ensure_ascii=False, indent=4)
 
 
 def main():
-    if API_KEY:
-        API = API_KEY
-    else:
-        API = Custom_Key
+    # checks for key
+    API = API_KEY if API_KEY else Custom_Key
 
     print("\nWelcome to the Shodan API Search Tool\n")
 
@@ -59,12 +66,13 @@ def main():
             print("\ngoodbye!\n")
             active = False
         elif int(user_resp) == 2:
-            pass
+            domain = input("Enter domain?")
+            intel_lookup(domain)
         elif int(user_resp) == 1:
-            country = input("Enter Country Code")
-            port = input("Enter a port")
+            country = input("Enter Country Code: ")
+            port = input("Enter a port: ")
             ss = server_search(country,port)
-            print(ss)
+
 
         else:
             print("\nNot a valid option - try again\n")
