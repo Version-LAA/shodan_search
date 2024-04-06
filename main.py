@@ -7,6 +7,7 @@ except:
 from config import KEY
 from datetime import datetime
 import json
+import pyfiglet
 
 
 DT = datetime.now()
@@ -62,7 +63,11 @@ def main():
             return
 
     api = shodan.Shodan(SET_API)
-    print("\nWelcome to the Shodan API Search Tool\n")
+    ascii_banner = pyfiglet.figlet_format("ShodanSearch")
+    print(ascii_banner)
+    print("\n\n\nWelcome to the Shodan API Search Tool\n")
+    print("Created by:Version-Laa")
+    print("Github: shodan_search\n\n\n")
 
     active = True
 
@@ -73,21 +78,26 @@ def main():
         print("3 - Exit")
         user_resp = input("\nEnter option: ")
 
-        if int(user_resp) == 3:
-            print("\ngoodbye!\n")
-            active = False
-        elif int(user_resp) == 2:
-            domain = input("Enter domain?")
-            intel_lookup(domain,api)
-        elif int(user_resp) == 1:
-            country = input("Enter Country Code: ")
-            port = input("Enter a port: ")
-            ss = server_search(country,port,api)
+        try:
+            if int(user_resp) == 3:
+                print("\ngoodbye!\n")
+                active = False
+            elif int(user_resp) == 2:
+                domain = input("Enter domain?")
+                intel_lookup(domain,api)
+                print("\n\n Results exported successfully\n\n")
+            elif int(user_resp) == 1:
+                country = input("Enter Country Code: ")
+                port = input("Enter a port: ")
+                ss = server_search(country,port,api)
+                print("\n\n Results exported successfully\n\n")
 
 
-        else:
-            print("\nNot a valid option - try again\n")
-
+            else:
+                print("\nNot a valid option - try again\n")
+        except:
+            print("\n\nExiting Program - key error\n\n")
+            return
 
 
 main()
