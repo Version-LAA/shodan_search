@@ -1,10 +1,15 @@
 import shodan
 import csv
-from secret import API_KEY
+try:
+    from secret import API_KEY
+except:
+    print("checking for custom key")
+
+from config import KEY
 from datetime import datetime
 import json
 
-Custom_Key = '' # place key here
+
 DT = datetime.now()
 TRAILER = DT.strftime("%m%d%Y_%H:%M:%S")
 
@@ -48,7 +53,11 @@ def intel_lookup(domain,key):
 
 def main():
     # getters and seters for key
-    SET_API = API_KEY if API_KEY else Custom_Key
+    try:
+        SET_API = API_KEY
+    except:
+        SET_API = KEY
+
     api = shodan.Shodan(SET_API)
     print("\nWelcome to the Shodan API Search Tool\n")
 
@@ -56,8 +65,8 @@ def main():
 
     while active:
         print("Select From Menu Below:\n")
-        print("1 - Open Servers Port By Country Search")
-        print("2 - Find Subdomain by Domain Search")
+        print("1 - Open Server Ports By Country Search")
+        print("2 - Find Subdomains by Domain Search")
         print("3 - Exit")
         user_resp = input("\nEnter option: ")
 
