@@ -4,7 +4,6 @@ try:
     from secret import API_KEY
 except:
     print("checking for custom key")
-
 from config import KEY
 from datetime import datetime
 import json
@@ -57,6 +56,10 @@ def main():
         SET_API = API_KEY
     except:
         SET_API = KEY
+        print("Added Custom key")
+        if len(SET_API) < 30:
+            print("\n\nKey is invalid  - Please check config.py file")
+            return
 
     api = shodan.Shodan(SET_API)
     print("\nWelcome to the Shodan API Search Tool\n")
