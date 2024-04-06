@@ -63,11 +63,11 @@ def main():
             return
 
     api = shodan.Shodan(SET_API)
-    ascii_banner = pyfiglet.figlet_format("ShodanSearch")
+    ascii_banner = pyfiglet.figlet_format("Shodan_Sleuth")
     print(ascii_banner)
     print("\n\n\nWelcome to the Shodan API Search Tool\n")
     print("Created by:Version-Laa")
-    print("Github: shodan_search\n\n\n")
+    print("Github: shodan_sleuth\n\n\n")
 
     active = True
 
