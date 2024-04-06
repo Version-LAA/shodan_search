@@ -11,3 +11,4 @@ Need a way to do some quick searching on Shodan for open ports or subdomains? Sh
 ## Installation
 
 git clone https://github.com/Version-LAA/shodan_sleuth.git
+python main.py
