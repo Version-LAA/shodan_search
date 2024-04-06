@@ -56,8 +56,8 @@ def main():
 
     while active:
         print("Select From Menu Below:\n")
-        print("1 - Server Port / Country Search")
-        print("2 - Domain Intel Search")
+        print("1 - Open Servers Port By Country Search")
+        print("2 - Find Subdomain by Domain Search")
         print("3 - Exit")
         user_resp = input("\nEnter option: ")
 
