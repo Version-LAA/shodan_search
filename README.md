@@ -10,11 +10,9 @@ Need a way to do some quick searching on Shodan for open ports or subdomains? Sh
 
 - Subdomain Discovery: For those interested in mapping the digital territory of a domain, Shodan_Sleuth offers the capability to identify all associated subdomains, their DNS record types, and corresponding IP addresses. The findings are compiled into a JSON file, offering a structured overview of a domain's subdomain architecture and its distribution across the internet.
 
-## Installation
+## Installation and Setup
 ```bash
 git clone https://github.com/Version-LAA/shodan_sleuth.git
-<<<<<<< HEAD
-=======
 cd repository
->>>>>>> 654f909e8b2901bcdd85420010f826eb476ee83f
+# Open config.py and place your api key
 python main.py
